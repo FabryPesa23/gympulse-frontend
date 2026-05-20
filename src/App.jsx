@@ -5,6 +5,7 @@ import Dashboard from './pages/dashboard/Dashboard'
 import Courses from './pages/courses/Courses'
 import CourseDetail from './pages/courses/CourseDetail'
 import Bookings from './pages/bookings/Bookings'
+import Zones from './pages/zones/Zones'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/courses/:id" element={<CourseDetail />} />
         <Route path="/bookings" element={<Bookings />} />
+        <Route path="/zones" element={<Zones />} />
       </Routes>
     </BrowserRouter>
   )
