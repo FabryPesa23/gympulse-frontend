@@ -35,13 +35,11 @@ function Bookings() {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       })
-
       if (!response.ok) {
         setMessageType('danger')
         setMessage('Errore durante la cancellazione')
         return
       }
-
       setMessageType('success')
       setMessage('Prenotazione cancellata con successo')
       fetchBookings()
@@ -65,48 +63,86 @@ function Bookings() {
 
   if (loading) return (
     <Container className="d-flex justify-content-center mt-5">
-      <Spinner animation="border" />
+      <Spinner animation="border" style={{ color: '#ff6b00' }} />
     </Container>
   )
 
   return (
     <Container className="mt-4">
-      <Button variant="outline-dark" className="mb-3" onClick={() => navigate('/dashboard')}>
+      <Button
+        className="mb-3"
+        onClick={() => navigate('/dashboard')}
+        style={{
+          backgroundColor: 'transparent',
+          border: '1px solid #ff6b00',
+          color: '#ff6b00',
+          borderRadius: '8px'
+        }}>
         ← Torna alla dashboard
       </Button>
 
-      <h3 className="mb-4">🎟️ Le mie prenotazioni</h3>
+      <h3 className="mb-4" style={{ color: '#ffffff' }}>
+        🎟️ Le mie <span style={{ color: '#ff6b00' }}>prenotazioni</span>
+      </h3>
 
       {message && <Alert variant={messageType}>{message}</Alert>}
 
       {bookings.length === 0 ? (
-        <Card className="text-center p-4 shadow-sm">
-          <p className="text-muted mb-3">Non hai ancora nessuna prenotazione</p>
-          <Button variant="dark" onClick={() => navigate('/courses')}>
+        <Card
+          className="text-center p-4"
+          style={{
+            backgroundColor: '#1a1a1a',
+            border: '1px solid #333',
+            borderRadius: '12px'
+          }}>
+          <p style={{ color: '#aaaaaa' }} className="mb-3">
+            Non hai ancora nessuna prenotazione
+          </p>
+          <Button
+            className="btn-accent mx-auto"
+            style={{ borderRadius: '8px', width: 'fit-content' }}
+            onClick={() => navigate('/courses')}>
             Scopri i corsi
           </Button>
         </Card>
       ) : (
         <Row>
           {bookings.map(booking => (
-            <Col key={booking.id} md={6} className="mb-3">
-              <Card className="shadow-sm">
+            <Col key={booking.id} xs={12} md={6} className="mb-3">
+              <Card
+                style={{
+                  backgroundColor: '#1a1a1a',
+                  border: '1px solid #333',
+                  borderRadius: '12px'
+                }}>
                 <Card.Body>
                   <div className="d-flex justify-content-between align-items-start mb-2">
-                    <h5>{booking.courseName}</h5>
+                    <h5 style={{ color: '#ffffff', fontWeight: '600' }}>
+                      {booking.courseName}
+                    </h5>
                     <Badge bg={getStatusColor(booking.status)}>
                       {getStatusLabel(booking.status)}
                     </Badge>
                   </div>
-                  <p className="mb-1">👨‍🏫 {booking.instructor}</p>
-                  <p className="mb-1">📅 {booking.date}</p>
-                  <p className="mb-3">🕐 {booking.startTime} - {booking.endTime}</p>
+                  <p className="mb-1" style={{ color: '#aaaaaa' }}>
+                    👨‍🏫 <span style={{ color: '#ffffff' }}>{booking.instructor}</span>
+                  </p>
+                  <p className="mb-1" style={{ color: '#aaaaaa' }}>
+                    📅 <span style={{ color: '#ffffff' }}>{booking.date}</span>
+                  </p>
+                  <p className="mb-3" style={{ color: '#aaaaaa' }}>
+                    🕐 <span style={{ color: '#ffffff' }}>{booking.startTime} - {booking.endTime}</span>
+                  </p>
                   {booking.status === 'CONFIRMED' && (
                     <Button
-                      variant="outline-danger"
                       size="sm"
                       onClick={() => handleCancel(booking.id)}
-                    >
+                      style={{
+                        backgroundColor: 'transparent',
+                        border: '1px solid #dc3545',
+                        color: '#dc3545',
+                        borderRadius: '8px'
+                      }}>
                       Cancella prenotazione
                     </Button>
                   )}

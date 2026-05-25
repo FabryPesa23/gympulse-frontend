@@ -46,43 +46,76 @@ function Login() {
   }
 
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-      <Card style={{ width: '400px' }} className="p-4 shadow">
-        <h2 className="text-center mb-4">🏋️ GymPulse</h2>
-        <h5 className="text-center mb-4">Accedi al tuo account</h5>
+    <Container
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: '100vh', backgroundColor: '#0f0f0f' }}>
+      <Card
+        style={{
+          width: '420px',
+          backgroundColor: '#1a1a1a',
+          border: '1px solid #333',
+          borderRadius: '16px'
+        }}
+        className="p-4 shadow">
+
+        <h2 className="text-center mb-2" style={{ color: '#ff6b00', fontWeight: 'bold' }}>
+          🏋️ GymPulse
+        </h2>
+        <h5 className="text-center mb-4" style={{ color: '#aaaaaa', fontWeight: '400' }}>
+          Accedi al tuo account
+        </h5>
 
         {error && <Alert variant="danger">{error}</Alert>}
 
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label>Email</Form.Label>
+            <Form.Label style={{ color: '#aaaaaa' }}>Email</Form.Label>
             <Form.Control
               type="email"
               placeholder="Inserisci email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              style={{
+                backgroundColor: '#222222',
+                border: '1px solid #333',
+                color: '#ffffff',
+                borderRadius: '8px'
+              }}
             />
           </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Password</Form.Label>
+          <Form.Group className="mb-4">
+            <Form.Label style={{ color: '#aaaaaa' }}>Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Inserisci password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              style={{
+                backgroundColor: '#222222',
+                border: '1px solid #333',
+                color: '#ffffff',
+                borderRadius: '8px'
+              }}
             />
           </Form.Group>
 
-          <Button variant="dark" type="submit" className="w-100" disabled={loading}>
+          <Button
+            type="submit"
+            className="w-100 btn-accent"
+            disabled={loading}
+            style={{ borderRadius: '8px', padding: '10px' }}>
             {loading ? 'Accesso in corso...' : 'Accedi'}
           </Button>
         </Form>
 
-        <p className="text-center mt-3">
-          Non hai un account? <Link to="/register">Registrati</Link>
+        <p className="text-center mt-3" style={{ color: '#aaaaaa' }}>
+          Non hai un account?{' '}
+          <Link to="/register" style={{ color: '#ff6b00', textDecoration: 'none' }}>
+            Registrati
+          </Link>
         </p>
       </Card>
     </Container>

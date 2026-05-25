@@ -65,35 +65,63 @@ function Zones() {
 
   if (loading) return (
     <Container className="d-flex justify-content-center mt-5">
-      <Spinner animation="border" />
+      <Spinner animation="border" style={{ color: '#ff6b00' }} />
     </Container>
   )
 
   return (
     <Container className="mt-4">
-      <Button variant="outline-dark" className="mb-3" onClick={() => navigate('/dashboard')}>
+      <Button
+        className="mb-3"
+        onClick={() => navigate('/dashboard')}
+        style={{
+          backgroundColor: 'transparent',
+          border: '1px solid #ff6b00',
+          color: '#ff6b00',
+          borderRadius: '8px'
+        }}>
         ← Torna alla dashboard
       </Button>
 
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h3>👥 Affollamento live</h3>
+        <h3 style={{ color: '#ffffff' }}>
+          👥 Affollamento <span style={{ color: '#ff6b00' }}>live</span>
+        </h3>
         {token && (
-          <Button variant="dark" onClick={() => setReporting(!reporting)}>
+          <Button
+            onClick={() => setReporting(!reporting)}
+            style={{
+              backgroundColor: reporting ? 'transparent' : '#ff6b00',
+              border: '1px solid #ff6b00',
+              color: reporting ? '#ff6b00' : '#ffffff',
+              borderRadius: '8px'
+            }}>
             {reporting ? 'Annulla' : '📊 Segnala affollamento'}
           </Button>
         )}
       </div>
 
       {reporting && (
-        <Card className="mb-4 shadow-sm p-3">
-          <h6>Segnala l'affollamento di una zona</h6>
+        <Card
+          className="mb-4 p-3"
+          style={{
+            backgroundColor: '#1a1a1a',
+            border: '1px solid #333',
+            borderRadius: '12px'
+          }}>
+          <h6 style={{ color: '#ffffff' }}>Segnala l'affollamento di una zona</h6>
           <div className="mb-3">
-            <label className="form-label">Seleziona zona</label>
+            <label className="form-label" style={{ color: '#aaaaaa' }}>Seleziona zona</label>
             <select
               className="form-select"
               value={selectedZone || ''}
               onChange={(e) => setSelectedZone(Number(e.target.value))}
-            >
+              style={{
+                backgroundColor: '#222222',
+                border: '1px solid #333',
+                color: '#ffffff',
+                borderRadius: '8px'
+              }}>
               <option value="">-- Scegli zona --</option>
               {zones.map(zone => (
                 <option key={zone.id} value={zone.id}>{zone.name}</option>
@@ -101,7 +129,9 @@ function Zones() {
             </select>
           </div>
           <div className="mb-3">
-            <label className="form-label">Livello affollamento: {level}%</label>
+            <label className="form-label" style={{ color: '#aaaaaa' }}>
+              Livello affollamento: <span style={{ color: '#ff6b00' }}>{level}%</span>
+            </label>
             <input
               type="range"
               className="form-range"
@@ -111,7 +141,11 @@ function Zones() {
               onChange={(e) => setLevel(Number(e.target.value))}
             />
           </div>
-          <Button variant="dark" onClick={handleReport} disabled={!selectedZone}>
+          <Button
+            className="btn-accent"
+            style={{ borderRadius: '8px' }}
+            onClick={handleReport}
+            disabled={!selectedZone}>
             Invia segnalazione
           </Button>
         </Card>
@@ -120,20 +154,28 @@ function Zones() {
       <Row>
         {zones.map(zone => (
           <Col key={zone.id} xs={12} md={6} className="mb-3">
-            <Card className="shadow-sm">
+            <Card
+              style={{
+                backgroundColor: '#1a1a1a',
+                border: '1px solid #333',
+                borderRadius: '12px'
+              }}>
               <Card.Body>
                 <div className="d-flex justify-content-between align-items-center mb-2">
-                  <h5>{zone.name}</h5>
-                  <span>{getStatusLabel(zone.occupancyStatus)}</span>
+                  <h5 style={{ color: '#ffffff', fontWeight: '600' }}>{zone.name}</h5>
+                  <span style={{ fontSize: '0.9rem' }}>{getStatusLabel(zone.occupancyStatus)}</span>
                 </div>
                 <ProgressBar
                   now={zone.currentLevel || 0}
                   variant={getStatusColor(zone.occupancyStatus)}
                   className="mb-2"
+                  style={{ backgroundColor: '#333', borderRadius: '8px' }}
                 />
-                <small className="text-muted">
-                  Occupazione: {zone.currentLevel || 0}%
-                  {zone.maxCapacity && ` — Capacità massima: ${zone.maxCapacity} persone`}
+                <small style={{ color: '#aaaaaa' }}>
+                  Occupazione: <span style={{ color: '#ffffff' }}>{zone.currentLevel || 0}%</span>
+                  {zone.maxCapacity && (
+                    <span> — Capacità massima: <span style={{ color: '#ffffff' }}>{zone.maxCapacity} persone</span></span>
+                  )}
                 </small>
               </Card.Body>
             </Card>
@@ -141,7 +183,7 @@ function Zones() {
         ))}
       </Row>
 
-      <p className="text-muted text-center mt-3">
+      <p className="text-center mt-3" style={{ color: '#aaaaaa' }}>
         <small>🔄 Aggiornamento automatico ogni 30 secondi</small>
       </p>
     </Container>

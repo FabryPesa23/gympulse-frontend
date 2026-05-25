@@ -54,17 +54,38 @@ function Register() {
     }
   }
 
+  const inputStyle = {
+    backgroundColor: '#222222',
+    border: '1px solid #333',
+    color: '#ffffff',
+    borderRadius: '8px'
+  }
+
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-      <Card style={{ width: '400px' }} className="p-4 shadow">
-        <h2 className="text-center mb-4">🏋️ GymPulse</h2>
-        <h5 className="text-center mb-4">Crea il tuo account</h5>
+    <Container
+      className="d-flex justify-content-center align-items-center py-5"
+      style={{ minHeight: '100vh', backgroundColor: '#0f0f0f' }}>
+      <Card
+        style={{
+          width: '420px',
+          backgroundColor: '#1a1a1a',
+          border: '1px solid #333',
+          borderRadius: '16px'
+        }}
+        className="p-4 shadow">
+
+        <h2 className="text-center mb-2" style={{ color: '#ff6b00', fontWeight: 'bold' }}>
+          🏋️ GymPulse
+        </h2>
+        <h5 className="text-center mb-4" style={{ color: '#aaaaaa', fontWeight: '400' }}>
+          Crea il tuo account
+        </h5>
 
         {error && <Alert variant="danger">{error}</Alert>}
 
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label>Nome</Form.Label>
+            <Form.Label style={{ color: '#aaaaaa' }}>Nome</Form.Label>
             <Form.Control
               type="text"
               name="firstName"
@@ -72,11 +93,12 @@ function Register() {
               value={formData.firstName}
               onChange={handleChange}
               required
+              style={inputStyle}
             />
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Cognome</Form.Label>
+            <Form.Label style={{ color: '#aaaaaa' }}>Cognome</Form.Label>
             <Form.Control
               type="text"
               name="lastName"
@@ -84,11 +106,12 @@ function Register() {
               value={formData.lastName}
               onChange={handleChange}
               required
+              style={inputStyle}
             />
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Email</Form.Label>
+            <Form.Label style={{ color: '#aaaaaa' }}>Email</Form.Label>
             <Form.Control
               type="email"
               name="email"
@@ -96,11 +119,12 @@ function Register() {
               value={formData.email}
               onChange={handleChange}
               required
+              style={inputStyle}
             />
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Password</Form.Label>
+            <Form.Label style={{ color: '#aaaaaa' }}>Password</Form.Label>
             <Form.Control
               type="password"
               name="password"
@@ -108,27 +132,36 @@ function Register() {
               value={formData.password}
               onChange={handleChange}
               required
+              style={inputStyle}
             />
           </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Telefono (opzionale)</Form.Label>
+          <Form.Group className="mb-4">
+            <Form.Label style={{ color: '#aaaaaa' }}>Telefono (opzionale)</Form.Label>
             <Form.Control
               type="tel"
               name="phone"
               placeholder="Inserisci telefono"
               value={formData.phone}
               onChange={handleChange}
+              style={inputStyle}
             />
           </Form.Group>
 
-          <Button variant="dark" type="submit" className="w-100" disabled={loading}>
+          <Button
+            type="submit"
+            className="w-100 btn-accent"
+            disabled={loading}
+            style={{ borderRadius: '8px', padding: '10px' }}>
             {loading ? 'Registrazione in corso...' : 'Registrati'}
           </Button>
         </Form>
 
-        <p className="text-center mt-3">
-          Hai già un account? <Link to="/login">Accedi</Link>
+        <p className="text-center mt-3" style={{ color: '#aaaaaa' }}>
+          Hai già un account?{' '}
+          <Link to="/login" style={{ color: '#ff6b00', textDecoration: 'none' }}>
+            Accedi
+          </Link>
         </p>
       </Card>
     </Container>

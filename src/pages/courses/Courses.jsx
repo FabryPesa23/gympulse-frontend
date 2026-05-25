@@ -33,9 +33,16 @@ function Courses() {
     return 'secondary'
   }
 
+  const getDifficultyLabel = (difficulty) => {
+    if (difficulty === 'BEGINNER') return 'Principiante'
+    if (difficulty === 'INTERMEDIATE') return 'Intermedio'
+    if (difficulty === 'ADVANCED') return 'Avanzato'
+    return difficulty
+  }
+
   if (loading) return (
     <Container className="d-flex justify-content-center mt-5">
-      <Spinner animation="border" />
+      <Spinner animation="border" style={{ color: '#ff6b00' }} />
     </Container>
   )
 
@@ -47,35 +54,54 @@ function Courses() {
 
   return (
     <Container className="mt-4">
-      <h3 className="mb-4">📅 Corsi disponibili</h3>
+      <h3 className="mb-4" style={{ color: '#ffffff' }}>
+        📅 Corsi <span style={{ color: '#ff6b00' }}>disponibili</span>
+      </h3>
       <Row>
         {courses.map(course => (
-          <Col key={course.id} md={4} className="mb-4">
-            <Card className="h-100 shadow-sm">
-              <Card.Body>
+          <Col key={course.id} xs={12} md={6} lg={4} className="mb-4">
+            <Card
+              className="h-100"
+              style={{
+                backgroundColor: '#1a1a1a',
+                border: '1px solid #333',
+                borderRadius: '12px'
+              }}>
+              <Card.Body className="d-flex flex-column">
                 <div className="d-flex justify-content-between align-items-start mb-2">
-                  <Card.Title>{course.name}</Card.Title>
+                  <Card.Title style={{ color: '#ffffff', fontWeight: '600' }}>
+                    {course.name}
+                  </Card.Title>
                   <Badge bg={getDifficultyColor(course.difficulty)}>
-                    {course.difficulty}
+                    {getDifficultyLabel(course.difficulty)}
                   </Badge>
                 </div>
-                <Card.Text className="text-muted">{course.description}</Card.Text>
-                <p className="mb-1"><strong>Istruttore:</strong> {course.instructor}</p>
-                <p className="mb-1"><strong>Durata:</strong> {course.durationMinutes} min</p>
-                <p className="mb-1"><strong>Categoria:</strong> {course.category?.name}</p>
-                <p className="mb-3">
-                  <strong>Posti disponibili:</strong>{' '}
-                  <span className={course.availableSlots === 0 ? 'text-danger' : 'text-success'}>
-                    {course.availableSlots}
-                  </span>
-                </p>
-                <Button
-                  variant="dark"
-                  className="w-100"
-                  onClick={() => navigate(`/courses/${course.id}`)}
-                >
-                  Vedi slot disponibili
-                </Button>
+                <Card.Text style={{ color: '#aaaaaa', fontSize: '0.9rem' }}>
+                  {course.description}
+                </Card.Text>
+                <div className="mt-auto">
+                  <p className="mb-1" style={{ color: '#aaaaaa' }}>
+                    👨‍🏫 <span style={{ color: '#ffffff' }}>{course.instructor}</span>
+                  </p>
+                  <p className="mb-1" style={{ color: '#aaaaaa' }}>
+                    ⏱️ <span style={{ color: '#ffffff' }}>{course.durationMinutes} min</span>
+                  </p>
+                  <p className="mb-1" style={{ color: '#aaaaaa' }}>
+                    🏷️ <span style={{ color: '#ffffff' }}>{course.category?.name}</span>
+                  </p>
+                  <p className="mb-3" style={{ color: '#aaaaaa' }}>
+                    🎟️ Posti:{' '}
+                    <span style={{ color: course.availableSlots === 0 ? '#dc3545' : '#28a745', fontWeight: '600' }}>
+                      {course.availableSlots}
+                    </span>
+                  </p>
+                  <Button
+                    className="w-100 btn-accent"
+                    style={{ borderRadius: '8px' }}
+                    onClick={() => navigate(`/courses/${course.id}`)}>
+                    Vedi slot disponibili
+                  </Button>
+                </div>
               </Card.Body>
             </Card>
           </Col>
