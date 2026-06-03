@@ -9,6 +9,7 @@ import Zones from "./pages/zones/Zones";
 import Profile from "./pages/profile/Profile";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <ProtectedRoute><Profile /></ProtectedRoute>
         } />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
