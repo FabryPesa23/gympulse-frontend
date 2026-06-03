@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Container, Form, Button, Alert, Card } from 'react-bootstrap'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import logoVertical from '../../assets/logo-vertical.svg'
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -64,7 +65,7 @@ function Register() {
   return (
     <Container
       className="d-flex justify-content-center align-items-center py-5"
-      style={{ minHeight: '100vh', backgroundColor: '#0f0f0f' }}>
+      style={{ minHeight: '100vh' }}>
       <Card
         style={{
           width: '420px',
@@ -74,12 +75,14 @@ function Register() {
         }}
         className="p-4 shadow">
 
-        <h2 className="text-center mb-2" style={{ color: '#ff6b00', fontWeight: 'bold' }}>
-          🏋️ GymPulse
-        </h2>
-        <h5 className="text-center mb-4" style={{ color: '#aaaaaa', fontWeight: '400' }}>
-          Crea il tuo account
-        </h5>
+        <div className="text-center mb-2">
+          <img src={logoVertical} alt="GymPulse" style={{ width: '180px' }} />
+          <p style={{ color: '#aaaaaa', fontSize: '0.9rem', marginTop: '4px', marginBottom: 0 }}>
+            Crea il tuo account
+          </p>
+        </div>
+
+        <hr style={{ borderColor: '#333', marginBottom: '20px' }} />
 
         {error && <Alert variant="danger">{error}</Alert>}
 

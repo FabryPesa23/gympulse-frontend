@@ -1,75 +1,79 @@
-import { useState } from 'react'
-import { Container, Form, Button, Alert, Card } from 'react-bootstrap'
-import { useNavigate, Link } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
+import { useState } from "react";
+import { Container, Form, Button, Alert, Card } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import logoVertical from "../../assets/logo-vertical.svg";
 
 function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const { login } = useAuth()
-  const navigate = useNavigate()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
     try {
-      const response = await fetch('http://localhost:8080/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      })
+      const response = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-      const data = await response.json()
+      const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || 'Credenziali non valide')
-        return
+        setError(data.message || "Credenziali non valide");
+        return;
       }
 
       login(data.token, {
         email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,
-        role: data.role
-      })
+        role: data.role,
+      });
 
-      navigate('/dashboard')
+      navigate("/dashboard");
     } catch (err) {
-      setError('Errore di connessione al server')
+      setError("Errore di connessione al server");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <Container
       className="d-flex justify-content-center align-items-center"
-      style={{ minHeight: '100vh', backgroundColor: '#0f0f0f' }}>
+      style={{ minHeight: "100vh" }}
+    >
       <Card
         style={{
-          width: '420px',
-          backgroundColor: '#1a1a1a',
-          border: '1px solid #333',
-          borderRadius: '16px'
+          width: "420px",
+          backgroundColor: "#1a1a1a",
+          border: "1px solid #333",
+          borderRadius: "16px",
         }}
-        className="p-4 shadow">
+        className="p-4 shadow"
+      >
+        <div className="text-center mb-2">
+          <img src={logoVertical} alt="GymPulse" style={{ width: "180px" }} />
+          <p style={{ color: "#aaaaaa", fontSize: "0.9rem", marginTop: "4px", marginBottom: 0 }}>
+            Accedi al tuo account
+          </p>
+        </div>
 
-        <h2 className="text-center mb-2" style={{ color: '#ff6b00', fontWeight: 'bold' }}>
-          🏋️ GymPulse
-        </h2>
-        <h5 className="text-center mb-4" style={{ color: '#aaaaaa', fontWeight: '400' }}>
-          Accedi al tuo account
-        </h5>
+        <hr style={{ borderColor: '#333', marginBottom: '20px' }} />
 
         {error && <Alert variant="danger">{error}</Alert>}
 
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label style={{ color: '#aaaaaa' }}>Email</Form.Label>
+            <Form.Label style={{ color: "#aaaaaa" }}>Email</Form.Label>
             <Form.Control
               type="email"
               placeholder="Inserisci email"
@@ -77,16 +81,16 @@ function Login() {
               onChange={(e) => setEmail(e.target.value)}
               required
               style={{
-                backgroundColor: '#222222',
-                border: '1px solid #333',
-                color: '#ffffff',
-                borderRadius: '8px'
+                backgroundColor: "#222222",
+                border: "1px solid #333",
+                color: "#ffffff",
+                borderRadius: "8px",
               }}
             />
           </Form.Group>
 
           <Form.Group className="mb-4">
-            <Form.Label style={{ color: '#aaaaaa' }}>Password</Form.Label>
+            <Form.Label style={{ color: "#aaaaaa" }}>Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Inserisci password"
@@ -94,10 +98,10 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required
               style={{
-                backgroundColor: '#222222',
-                border: '1px solid #333',
-                color: '#ffffff',
-                borderRadius: '8px'
+                backgroundColor: "#222222",
+                border: "1px solid #333",
+                color: "#ffffff",
+                borderRadius: "8px",
               }}
             />
           </Form.Group>
@@ -106,20 +110,21 @@ function Login() {
             type="submit"
             className="w-100 btn-accent"
             disabled={loading}
-            style={{ borderRadius: '8px', padding: '10px' }}>
-            {loading ? 'Accesso in corso...' : 'Accedi'}
+            style={{ borderRadius: "8px", padding: "10px" }}
+          >
+            {loading ? "Accesso in corso..." : "Accedi"}
           </Button>
         </Form>
 
-        <p className="text-center mt-3" style={{ color: '#aaaaaa' }}>
-          Non hai un account?{' '}
-          <Link to="/register" style={{ color: '#ff6b00', textDecoration: 'none' }}>
+        <p className="text-center mt-3" style={{ color: "#aaaaaa" }}>
+          Non hai un account?{" "}
+          <Link to="/register" style={{ color: "#ff6b00", textDecoration: "none" }}>
             Registrati
           </Link>
         </p>
       </Card>
     </Container>
-  )
+  );
 }
 
-export default Login
+export default Login;
