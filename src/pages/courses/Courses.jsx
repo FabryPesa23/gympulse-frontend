@@ -7,8 +7,9 @@ function Courses() {
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const { token } = useAuth()
+  const { token, user } = useAuth()
   const navigate = useNavigate()
+  const isAdmin = user?.role === 'ADMIN'
 
   useEffect(() => {
     fetchCourses()
@@ -23,6 +24,21 @@ function Courses() {
       setError('Errore nel caricamento dei corsi')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleDelete = async (course) => {
+    const confirmed = window.confirm(`Sei sicuro di voler eliminare il corso "${course.name}"?`)
+    if (!confirmed) return
+
+    try {
+      await fetch(`http://localhost:8080/api/courses/${course.id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      setCourses(courses.filter(c => c.id !== course.id))
+    } catch (err) {
+      console.error(err)
     }
   }
 
@@ -54,9 +70,20 @@ function Courses() {
 
   return (
     <Container className="mt-4">
-      <h3 className="mb-4" style={{ color: '#ffffff' }}>
-        📅 Corsi <span style={{ color: '#ff6b00' }}>disponibili</span>
-      </h3>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h3 style={{ color: '#ffffff' }}>
+          📅 Corsi <span style={{ color: '#ff6b00' }}>disponibili</span>
+        </h3>
+        {isAdmin && (
+          <Button
+            className="btn-accent"
+            style={{ borderRadius: '8px' }}
+            onClick={() => navigate('/courses/new')}>
+            + Aggiungi corso
+          </Button>
+        )}
+      </div>
+
       <Row>
         {courses.map(course => (
           <Col key={course.id} xs={12} md={6} lg={4} className="mb-4">
@@ -90,17 +117,45 @@ function Courses() {
                     🏷️ <span style={{ color: '#ffffff' }}>{course.category?.name}</span>
                   </p>
                   <p className="mb-3" style={{ color: '#aaaaaa' }}>
-                    🎟️ Posti:{' '}
-                    <span style={{ color: course.availableSlots === 0 ? '#dc3545' : '#28a745', fontWeight: '600' }}>
-                      {course.availableSlots}
+                    🎟️ Capacità:{' '}
+                    <span style={{ color: '#ffffff', fontWeight: '600' }}>
+                      {course.maxCapacity} posti
                     </span>
                   </p>
                   <Button
-                    className="w-100 btn-accent"
+                    className="w-100 btn-accent mb-2"
                     style={{ borderRadius: '8px' }}
                     onClick={() => navigate(`/courses/${course.id}`)}>
                     Vedi slot disponibili
                   </Button>
+                  {isAdmin && (
+                    <div className="d-flex gap-2">
+                      <Button
+                        className="w-50"
+                        size="sm"
+                        onClick={() => navigate(`/courses/${course.id}/edit`)}
+                        style={{
+                          backgroundColor: 'transparent',
+                          border: '1px solid #ffc107',
+                          color: '#ffc107',
+                          borderRadius: '8px'
+                        }}>
+                        ✏️ Modifica
+                      </Button>
+                      <Button
+                        className="w-50"
+                        size="sm"
+                        onClick={() => handleDelete(course)}
+                        style={{
+                          backgroundColor: 'transparent',
+                          border: '1px solid #dc3545',
+                          color: '#dc3545',
+                          borderRadius: '8px'
+                        }}>
+                        🗑️ Elimina
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </Card.Body>
             </Card>

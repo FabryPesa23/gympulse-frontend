@@ -5,6 +5,7 @@ const AuthContext = createContext(null)
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem('token') || null)
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null)
+  const [profileImage, setProfileImage] = useState(localStorage.getItem('profileImage') || null)
 
   const login = (token, user) => {
     localStorage.setItem('token', token)
@@ -16,12 +17,19 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    localStorage.removeItem('profileImage')
     setToken(null)
     setUser(null)
+    setProfileImage(null)
+  }
+
+  const updateProfileImage = (imageUrl) => {
+    localStorage.setItem('profileImage', imageUrl)
+    setProfileImage(imageUrl)
   }
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
+    <AuthContext.Provider value={{ token, user, login, logout, profileImage, updateProfileImage }}>
       {children}
     </AuthContext.Provider>
   )

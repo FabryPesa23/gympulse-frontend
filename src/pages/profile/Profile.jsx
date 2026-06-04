@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
 function Profile() {
-  const { token } = useAuth()
+  const { token, updateProfileImage } = useAuth()
   const navigate = useNavigate()
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -94,6 +94,7 @@ function Profile() {
         return
       }
       setProfile(data)
+      updateProfileImage(data.profileImageUrl)
       setMessageType('success')
       setMessage('Foto profilo aggiornata!')
     } catch (err) {
@@ -155,11 +156,7 @@ function Profile() {
           ) : (
             <div
               className="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
-              style={{
-                width: 100,
-                height: 100,
-                backgroundColor: '#ff6b00'
-              }}>
+              style={{ width: 100, height: 100, backgroundColor: '#ff6b00' }}>
               <span className="text-white fs-3 fw-bold">
                 {profile?.firstName?.charAt(0)}{profile?.lastName?.charAt(0)}
               </span>
@@ -168,22 +165,19 @@ function Profile() {
           <h5 style={{ color: '#ffffff' }}>{profile?.firstName} {profile?.lastName}</h5>
           <p style={{ color: '#aaaaaa' }} className="mb-1">{profile?.email}</p>
           <p className="mb-3">
-            <span
-              className="badge"
-              style={{ backgroundColor: '#ff6b00', color: '#ffffff' }}>
+            <span className="badge" style={{ backgroundColor: '#ff6b00', color: '#ffffff' }}>
               {profile?.role}
             </span>
           </p>
-          <label
-            style={{
-              backgroundColor: 'transparent',
-              border: '1px solid #ff6b00',
-              color: '#ff6b00',
-              borderRadius: '8px',
-              padding: '6px 12px',
-              cursor: 'pointer',
-              fontSize: '0.9rem'
-            }}>
+          <label style={{
+            backgroundColor: 'transparent',
+            border: '1px solid #ff6b00',
+            color: '#ff6b00',
+            borderRadius: '8px',
+            padding: '6px 12px',
+            cursor: 'pointer',
+            fontSize: '0.9rem'
+          }}>
             📷 Cambia foto
             <input
               type="file"
@@ -195,12 +189,11 @@ function Profile() {
         </Card.Body>
       </Card>
 
-      <Card
-        style={{
-          backgroundColor: '#1a1a1a',
-          border: '1px solid #333',
-          borderRadius: '12px'
-        }}>
+      <Card style={{
+        backgroundColor: '#1a1a1a',
+        border: '1px solid #333',
+        borderRadius: '12px'
+      }}>
         <Card.Body>
           <h5 className="mb-3" style={{ color: '#ffffff' }}>Modifica dati</h5>
           <Form onSubmit={handleSubmit}>

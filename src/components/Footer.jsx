@@ -1,7 +1,35 @@
 import { Container, Row, Col } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.svg'
 
 function Footer() {
+  const navigate = useNavigate()
+
+  const navLinks = [
+    { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Corsi', path: '/courses' },
+    { label: 'Prenotazioni', path: '/bookings' },
+    { label: 'Affollamento', path: '/zones' },
+    { label: 'Profilo', path: '/profile' },
+  ]
+
+  const serviceLinks = [
+    { label: 'Yoga', path: '/courses' },
+    { label: 'Pilates', path: '/courses' },
+    { label: 'Spinning', path: '/courses' },
+    { label: 'HIIT', path: '/courses' },
+    { label: 'CrossFit', path: '/courses' },
+  ]
+
+  const linkStyle = {
+    color: '#aaaaaa',
+    fontSize: '0.85rem',
+    marginBottom: '6px',
+    cursor: 'pointer',
+    display: 'block',
+    transition: 'color 0.2s ease'
+  }
+
   return (
     <footer style={{
       backgroundColor: '#1a1a1a',
@@ -12,7 +40,14 @@ function Footer() {
       <Container>
         <Row className="mb-4">
           <Col xs={12} md={4} className="mb-4">
-            <img src={logo} alt="GymPulse" height="45" className="mb-3" />
+            <img
+              src={logo}
+              alt="GymPulse"
+              height="45"
+              className="mb-3"
+              style={{ cursor: 'pointer' }}
+              onClick={() => navigate('/dashboard')}
+            />
             <p style={{ color: '#aaaaaa', fontSize: '0.9rem' }}>
               La piattaforma smart per gestire la tua esperienza in palestra.
               Prenota corsi, monitora l'affollamento e molto altro.
@@ -23,9 +58,14 @@ function Footer() {
             <h6 style={{ color: '#ff6b00', fontFamily: 'Bebas Neue', fontSize: '1.1rem', letterSpacing: '1px' }}>
               Navigazione
             </h6>
-            {['Dashboard', 'Corsi', 'Prenotazioni', 'Affollamento', 'Profilo'].map(item => (
-              <p key={item} style={{ color: '#aaaaaa', fontSize: '0.85rem', marginBottom: '6px' }}>
-                {item}
+            {navLinks.map(({ label, path }) => (
+              <p
+                key={label}
+                style={linkStyle}
+                onClick={() => navigate(path)}
+                onMouseEnter={e => e.target.style.color = '#ff6b00'}
+                onMouseLeave={e => e.target.style.color = '#aaaaaa'}>
+                {label}
               </p>
             ))}
           </Col>
@@ -34,9 +74,14 @@ function Footer() {
             <h6 style={{ color: '#ff6b00', fontFamily: 'Bebas Neue', fontSize: '1.1rem', letterSpacing: '1px' }}>
               Servizi
             </h6>
-            {['Yoga', 'Pilates', 'Spinning', 'HIIT', 'CrossFit'].map(item => (
-              <p key={item} style={{ color: '#aaaaaa', fontSize: '0.85rem', marginBottom: '6px' }}>
-                {item}
+            {serviceLinks.map(({ label, path }) => (
+              <p
+                key={label}
+                style={linkStyle}
+                onClick={() => navigate(path)}
+                onMouseEnter={e => e.target.style.color = '#ff6b00'}
+                onMouseLeave={e => e.target.style.color = '#aaaaaa'}>
+                {label}
               </p>
             ))}
           </Col>
@@ -49,7 +94,7 @@ function Footer() {
               📍 Via Portuense 23, Roma
             </p>
             <p style={{ color: '#aaaaaa', fontSize: '0.85rem', marginBottom: '6px' }}>
-              📞 +39 02 1234567
+              📞 +39 333 1234567
             </p>
             <p style={{ color: '#aaaaaa', fontSize: '0.85rem', marginBottom: '6px' }}>
               📧 info@gympulse.it

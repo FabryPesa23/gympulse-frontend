@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import logo from '../assets/logo.svg'
 
 function NavBar() {
-  const { user, logout } = useAuth()
+  const { user, logout, profileImage } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const [opacity, setOpacity] = useState(0)
@@ -70,8 +70,37 @@ function NavBar() {
         <Nav className="d-flex align-items-center gap-3">
           <Nav.Link
             onClick={() => navigate('/profile')}
+            className="d-flex align-items-center gap-2"
             style={{ color: isActive('/profile') ? '#ff6b00' : '#ffffff' }}>
-            👤 {user?.firstName}
+            {profileImage ? (
+              <img
+                src={profileImage}
+                alt="profilo"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  border: '2px solid #ff6b00'
+                }}
+              />
+            ) : (
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                backgroundColor: '#ff6b00',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '0.85rem',
+                fontWeight: '600',
+                color: '#ffffff'
+              }}>
+                {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
+              </div>
+            )}
+            {user?.firstName}
           </Nav.Link>
           <Button
             size="sm"
