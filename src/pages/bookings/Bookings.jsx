@@ -1,13 +1,6 @@
 import { useState, useEffect } from "react";
 import {
-  Container,
-  Card,
-  Badge,
-  Button,
-  Spinner,
-  Alert,
-  Row,
-  Col,
+  Container, Card, Badge, Button, Spinner, Alert, Row, Col,
 } from "react-bootstrap";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +10,8 @@ function Bookings() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("success");
+  const [confirmCancelId, setConfirmCancelId] = useState(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const { token } = useAuth();
   const navigate = useNavigate();
 
@@ -45,7 +40,7 @@ function Bookings() {
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
-        },
+        }
       );
       if (!response.ok) {
         setMessageType("danger");
@@ -54,6 +49,7 @@ function Bookings() {
       }
       setMessageType("success");
       setMessage("Prenotazione cancellata con successo");
+      setConfirmCancelId(null);
       fetchBookings();
     } catch (err) {
       setMessageType("danger");
@@ -68,7 +64,7 @@ function Bookings() {
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
-        },
+        }
       );
       if (!response.ok) {
         setMessageType("danger");
@@ -77,6 +73,7 @@ function Bookings() {
       }
       setMessageType("success");
       setMessage("Prenotazione eliminata dallo storico");
+      setConfirmDeleteId(null);
       fetchBookings();
     } catch (err) {
       setMessageType("danger");
@@ -115,11 +112,11 @@ function Bookings() {
           borderRadius: "8px",
         }}
       >
-        ← Torna alla dashboard
+        Torna alla dashboard
       </Button>
 
       <h3 className="mb-4" style={{ color: "#ffffff" }}>
-        🎟️ Le mie <span style={{ color: "#ff6b00" }}>prenotazioni</span>
+        Le mie <span style={{ color: "#ff6b00" }}>prenotazioni</span>
       </h3>
 
       {message && <Alert variant={messageType}>{message}</Alert>}
@@ -151,8 +148,13 @@ function Bookings() {
               <Card
                 style={{
                   backgroundColor: "#1a1a1a",
-                  border: "1px solid #333",
+                  border: confirmCancelId === booking.id
+                    ? "1px solid #dc3545"
+                    : confirmDeleteId === booking.id
+                    ? "1px solid #555"
+                    : "1px solid #333",
                   borderRadius: "12px",
+                  transition: "border 0.2s ease"
                 }}
               >
                 <Card.Body>
@@ -165,47 +167,120 @@ function Bookings() {
                     </Badge>
                   </div>
                   <p className="mb-1" style={{ color: "#aaaaaa" }}>
-                    👨‍🏫{" "}
-                    <span style={{ color: "#ffffff" }}>
-                      {booking.instructor}
-                    </span>
+                    👨‍🏫 <span style={{ color: "#ffffff" }}>{booking.instructor}</span>
                   </p>
                   <p className="mb-1" style={{ color: "#aaaaaa" }}>
                     📅 <span style={{ color: "#ffffff" }}>{booking.date}</span>
                   </p>
                   <p className="mb-3" style={{ color: "#aaaaaa" }}>
-                    🕐{" "}
-                    <span style={{ color: "#ffffff" }}>
-                      {booking.startTime} - {booking.endTime}
-                    </span>
+                    🕐 <span style={{ color: "#ffffff" }}>{booking.startTime} - {booking.endTime}</span>
                   </p>
+
                   {booking.status === "CONFIRMED" && (
-                    <Button
-                      size="sm"
-                      onClick={() => handleCancel(booking.id)}
-                      style={{
-                        backgroundColor: "transparent",
-                        border: "1px solid #dc3545",
-                        color: "#dc3545",
-                        borderRadius: "8px",
-                      }}
-                    >
-                      Cancella prenotazione
-                    </Button>
+                    confirmCancelId === booking.id ? (
+                      <div
+                        className="p-3 rounded"
+                        style={{ backgroundColor: "#2a0a0a", border: "1px solid #dc3545" }}
+                      >
+                        <p style={{ color: "#ffffff", fontSize: "0.85rem", marginBottom: "10px" }}>
+                          Sei sicuro di voler cancellare questa prenotazione?
+                        </p>
+                        <div className="d-flex gap-2">
+                          <Button
+                            size="sm"
+                            className="w-50"
+                            onClick={() => handleCancel(booking.id)}
+                            style={{
+                              backgroundColor: "#dc3545",
+                              border: "none",
+                              borderRadius: "8px"
+                            }}
+                          >
+                            Si, cancella
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="w-50"
+                            onClick={() => setConfirmCancelId(null)}
+                            style={{
+                              backgroundColor: "transparent",
+                              border: "1px solid #555",
+                              color: "#aaaaaa",
+                              borderRadius: "8px"
+                            }}
+                          >
+                            Annulla
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={() => setConfirmCancelId(booking.id)}
+                        style={{
+                          backgroundColor: "transparent",
+                          border: "1px solid #dc3545",
+                          color: "#dc3545",
+                          borderRadius: "8px",
+                        }}
+                      >
+                        Cancella prenotazione
+                      </Button>
+                    )
                   )}
+
                   {booking.status === "CANCELLED" && (
-                    <Button
-                      size="sm"
-                      onClick={() => handleDelete(booking.id)}
-                      style={{
-                        backgroundColor: "transparent",
-                        border: "1px solid #555",
-                        color: "#aaaaaa",
-                        borderRadius: "8px",
-                      }}
-                    >
-                      🗑️ Rimuovi
-                    </Button>
+                    confirmDeleteId === booking.id ? (
+                      <div
+                        className="p-3 rounded"
+                        style={{ backgroundColor: "#1a1a1a", border: "1px solid #555" }}
+                      >
+                        <p style={{ color: "#ffffff", fontSize: "0.85rem", marginBottom: "10px" }}>
+                          Rimuovere questa prenotazione dallo storico?
+                        </p>
+                        <div className="d-flex gap-2">
+                          <Button
+                            size="sm"
+                            className="w-50"
+                            onClick={() => handleDelete(booking.id)}
+                            style={{
+                              backgroundColor: "#555",
+                              border: "none",
+                              borderRadius: "8px",
+                              color: "#ffffff"
+                            }}
+                          >
+                            Si, rimuovi
+                          </Button>
+                          <Button
+                            size="sm"
+                            className="w-50"
+                            onClick={() => setConfirmDeleteId(null)}
+                            style={{
+                              backgroundColor: "transparent",
+                              border: "1px solid #555",
+                              color: "#aaaaaa",
+                              borderRadius: "8px"
+                            }}
+                          >
+                            Annulla
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={() => setConfirmDeleteId(booking.id)}
+                        style={{
+                          backgroundColor: "transparent",
+                          border: "1px solid #555",
+                          color: "#aaaaaa",
+                          borderRadius: "8px",
+                        }}
+                      >
+                        Rimuovi
+                      </Button>
+                    )
                   )}
                 </Card.Body>
               </Card>
