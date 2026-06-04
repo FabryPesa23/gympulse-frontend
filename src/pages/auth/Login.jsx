@@ -9,7 +9,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, updateProfileImage } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -37,6 +37,19 @@ function Login() {
         lastName: data.lastName,
         role: data.role,
       });
+
+      // Carica subito la foto profilo
+      try {
+        const profileResponse = await fetch("http://localhost:8080/api/users/me", {
+          headers: { Authorization: `Bearer ${data.token}` },
+        });
+        const profileData = await profileResponse.json();
+        if (profileData.profileImageUrl) {
+          updateProfileImage(profileData.profileImageUrl)
+        }
+      } catch (err) {
+        console.error(err)
+      }
 
       navigate("/dashboard");
     } catch (err) {
