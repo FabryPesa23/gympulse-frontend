@@ -11,6 +11,7 @@ import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Footer from "./components/Footer";
 import CourseForm from "./pages/courses/CourseForm";
+import AppDescription from './components/AppDescription';
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
           }
         />
       </Routes>
+      <AppDescription />
       <Footer />
     </BrowserRouter>
   );

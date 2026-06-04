@@ -51,7 +51,7 @@ function Footer() {
             />
             <p style={{ color: '#aaaaaa', fontSize: '0.9rem' }}>
               La piattaforma smart per gestire la tua esperienza in palestra.
-              Prenota corsi, monitora l affollamento e molto altro.
+              Prenota corsi, monitora l'affollamento e molto altro.
             </p>
           </Col>
 
