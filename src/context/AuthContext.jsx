@@ -28,8 +28,14 @@ export function AuthProvider({ children }) {
     setProfileImage(imageUrl)
   }
 
+  const updateUser = (updatedUser) => {
+    const newUser = { ...user, ...updatedUser }
+    localStorage.setItem('user', JSON.stringify(newUser))
+    setUser(newUser)
+  }
+
   return (
-    <AuthContext.Provider value={{ token, user, login, logout, profileImage, updateProfileImage }}>
+    <AuthContext.Provider value={{ token, user, login, logout, profileImage, updateProfileImage, updateUser }}>
       {children}
     </AuthContext.Provider>
   )

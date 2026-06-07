@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
 function Profile() {
-  const { token, updateProfileImage } = useAuth()
+  const { token, updateProfileImage, updateUser } = useAuth()
   const navigate = useNavigate()
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -66,6 +66,10 @@ function Profile() {
         return
       }
       setProfile(data)
+      updateUser({
+        firstName: data.firstName,
+        lastName: data.lastName
+      })
       setMessageType('success')
       setMessage('Profilo aggiornato con successo!')
     } catch (err) {
