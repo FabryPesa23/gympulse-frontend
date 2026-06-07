@@ -63,7 +63,7 @@ function Footer() {
               <p
                 key={index}
                 style={linkStyle}
-                onClick={() => navigate(item.path)}
+                onClick={() => { navigate(item.path); window.scrollTo(0, 0); }}
                 onMouseEnter={e => e.target.style.color = '#ff6b00'}
                 onMouseLeave={e => e.target.style.color = '#aaaaaa'}
               >
